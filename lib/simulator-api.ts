@@ -602,7 +602,13 @@ const scenarioResponses: Record<string, Record<number, (userInput: string) => st
   },
 };
 
-// Mock API response function
+/**
+ * Mock API response function
+ * @param userInput User's input message
+ * @param scenarioId ID of the current scenario
+ * @param step Current step in the scenario
+ * @returns Promise resolving to the AI's response
+ */
 export async function mockApiResponse(userInput: string, scenarioId: string, step: number): Promise<string> {
   // Simulate network delay (300-1200ms)
   await delay(300 + Math.random() * 900);
@@ -616,7 +622,11 @@ export async function mockApiResponse(userInput: string, scenarioId: string, ste
   return "I'm an AI assistant focused on safety and helpfulness. How can I assist you with your educational exploration of AI safety?";
 }
 
-// Save an attack sequence for later replay
+/**
+ * Save an attack sequence for later replay
+ * @param sequence Attack sequence to save
+ * @returns ID of the saved sequence
+ */
 export function saveAttackSequence(sequence: AttackSequence): string {
   const id = `seq_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   const sequenceWithId = {
@@ -629,17 +639,28 @@ export function saveAttackSequence(sequence: AttackSequence): string {
   return id;
 }
 
-// Get all saved attack sequences
+/**
+ * Get all saved attack sequences
+ * @returns Array of saved attack sequences
+ */
 export function getSavedAttackSequences(): AttackSequence[] {
   return [...savedAttackSequences];
 }
 
-// Get a specific attack sequence by ID
+/**
+ * Get a specific attack sequence by ID
+ * @param id ID of the sequence to retrieve
+ * @returns The attack sequence or undefined if not found
+ */
 export function getAttackSequenceById(id: string): AttackSequence | undefined {
   return savedAttackSequences.find(seq => seq.id === id);
 }
 
-// Delete an attack sequence
+/**
+ * Delete an attack sequence
+ * @param id ID of the sequence to delete
+ * @returns Boolean indicating success
+ */
 export function deleteAttackSequence(id: string): boolean {
   const initialLength = savedAttackSequences.length;
   savedAttackSequences = savedAttackSequences.filter(seq => seq.id !== id);
@@ -652,19 +673,29 @@ export type ApiMode = 'mock' | 'openai';
 let currentApiMode: ApiMode = 'mock';
 let openAiClient: OpenAIClient | null = null;
 
-// Set the API mode
+/**
+ * Set the API mode
+ * @param mode API mode to set
+ */
 export function setApiMode(mode: ApiMode): void {
   currentApiMode = mode;
 }
 
-// Get the current API mode
+/**
+ * Get the current API mode
+ * @returns Current API mode
+ */
 export function getApiMode(): ApiMode {
   return currentApiMode;
 }
 
-// Initialize OpenAI client
-export function initializeOpenAiClient(apiKey: string): void {
-  openAiClient = new OpenAIClient(apiKey);
+/**
+ * Initialize OpenAI client
+ * @param apiKey OpenAI API key
+ * @param model Model to use (optional)
+ */
+export function initializeOpenAiClient(apiKey: string, model?: string): void {
+  openAiClient = new OpenAIClient(apiKey, model);
 }
 
 // Get response using the current API mode

@@ -1,9 +1,11 @@
+// OpenAI API client for the simulator
+
 export class OpenAIClient {
   private apiKey: string;
   private baseUrl = 'https://api.openai.com/v1/chat/completions';
-  private model = 'gpt-4';
+  private model: string;
 
-  constructor(apiKey: string, model = 'gpt-4') {
+  constructor(apiKey: string, model = 'gpt-4o') {
     this.apiKey = apiKey;
     this.model = model;
   }
@@ -54,8 +56,12 @@ export class OpenAIClient {
     this.model = model;
   }
 
+  getModel(): string {
+    return this.model;
+  }
+
   getAvailableModels(): string[] {
-    // This would ideally fetch from the OpenAI API, but for simplicity we'll return a static list
-    return ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo'];
+    // Return a list of supported models
+    return ['gpt-4o', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'];
   }
 }
