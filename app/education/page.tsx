@@ -78,8 +78,8 @@ export default function EducationPage() {
                       <CardDescription>{resource.description}</CardDescription>
                     </CardHeader>
                     <CardFooter className="mt-auto pt-4">
-                      <Button variant="outline" className="w-full">
-                        Read Guide
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/education/guides">Read Guide</Link>
                       </Button>
                     </CardFooter>
                   </Card>
@@ -128,8 +128,8 @@ export default function EducationPage() {
                       <CardDescription>{resource.description}</CardDescription>
                     </CardHeader>
                     <CardFooter className="mt-auto pt-4">
-                      <Button variant="outline" className="w-full">
-                        View Resource
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/education/technical">View Resource</Link>
                       </Button>
                     </CardFooter>
                   </Card>
@@ -180,11 +180,15 @@ export default function EducationPage() {
                       <p className="text-sm text-muted-foreground">{paper.abstract}</p>
                     </CardContent>
                     <CardFooter className="flex justify-between">
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4 mr-2" /> PDF
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href="/education/papers/paper1.pdf" download>
+                          <Download className="h-4 w-4 mr-2" /> PDF
+                        </Link>
                       </Button>
-                      <Button variant="ghost" size="sm">
-                        <ExternalLink className="h-4 w-4 mr-2" /> View Citation
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link href="/education/citations/paper1">
+                          <ExternalLink className="h-4 w-4 mr-2" /> View Citation
+                        </Link>
                       </Button>
                     </CardFooter>
                   </Card>
@@ -268,8 +272,8 @@ export default function EducationPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Developer Resources
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <Link href="/education/developers">Developer Resources</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -287,8 +291,8 @@ export default function EducationPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Research Resources
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <Link href="/education/researchers">Research Resources</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -306,8 +310,8 @@ export default function EducationPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Policy Resources
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <Link href="/education/policy">Policy Resources</Link>
                   </Button>
                 </CardFooter>
               </Card>

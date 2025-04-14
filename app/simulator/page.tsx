@@ -60,11 +60,21 @@ export default function SimulatorPage() {
                 <CardContent>
                   <Tabs defaultValue="scenario1" className="w-full">
                     <TabsList className="grid w-full grid-cols-5">
-                      <TabsTrigger value="scenario1">Goal Hijacking</TabsTrigger>
-                      <TabsTrigger value="scenario2">Refusal Suppression</TabsTrigger>
-                      <TabsTrigger value="scenario3">Context Manipulation</TabsTrigger>
-                      <TabsTrigger value="scenario4">Persona Exploitation</TabsTrigger>
-                      <TabsTrigger value="scenario5">Instruction Injection</TabsTrigger>
+                      <TabsTrigger value="scenario1" data-value="goal-hijacking">
+                        Goal Hijacking
+                      </TabsTrigger>
+                      <TabsTrigger value="scenario2" data-value="refusal-suppression">
+                        Refusal Suppression
+                      </TabsTrigger>
+                      <TabsTrigger value="scenario3" data-value="context-manipulation">
+                        Context Manipulation
+                      </TabsTrigger>
+                      <TabsTrigger value="scenario4" data-value="persona-exploitation">
+                        Persona Exploitation
+                      </TabsTrigger>
+                      <TabsTrigger value="scenario5" data-value="instruction-injection">
+                        Instruction Injection
+                      </TabsTrigger>
                     </TabsList>
                     <TabsContent value="scenario1">
                       <SimulatorInterfaceInteractive scenario={scenarios[0]} />
@@ -88,8 +98,8 @@ export default function SimulatorPage() {
                     <AlertTriangle className="h-4 w-4 mr-2" />
                     This simulator is for educational purposes only
                   </div>
-                  <Button variant="outline" size="sm">
-                    View Safety Guidelines
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href="/safety-guidelines">View Safety Guidelines</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -216,6 +226,11 @@ export default function SimulatorPage() {
                     <li>Study how safety mechanisms respond to sequential manipulation attempts</li>
                   </ul>
                 </CardContent>
+                <CardFooter>
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <Link href="/research">Research Resources</Link>
+                  </Button>
+                </CardFooter>
               </Card>
               <Card>
                 <CardHeader>
@@ -229,6 +244,11 @@ export default function SimulatorPage() {
                     <li>Test systems against sophisticated manipulation patterns</li>
                   </ul>
                 </CardContent>
+                <CardFooter>
+                  <Button variant="outline" size="sm" className="w-full" asChild>
+                    <Link href="/education">Educational Resources</Link>
+                  </Button>
+                </CardFooter>
               </Card>
             </div>
           </div>
@@ -238,13 +258,13 @@ export default function SimulatorPage() {
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">© {new Date().getFullYear()} LLM Safety Simulator. All rights reserved.</p>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="#" className="hover:underline underline-offset-4">
+            <Link href="/terms" className="hover:underline underline-offset-4">
               Terms
             </Link>
-            <Link href="#" className="hover:underline underline-offset-4">
+            <Link href="/privacy" className="hover:underline underline-offset-4">
               Privacy
             </Link>
-            <Link href="#" className="hover:underline underline-offset-4">
+            <Link href="/contact" className="hover:underline underline-offset-4">
               Contact
             </Link>
           </div>

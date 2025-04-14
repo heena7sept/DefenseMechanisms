@@ -177,8 +177,10 @@ export default function ResearchPage() {
                     </ul>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" size="sm">
-                      <FileText className="h-4 w-4 mr-2" /> View Project Details
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/research/projects/${project.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                        <FileText className="h-4 w-4 mr-2" /> View Project Details
+                      </Link>
                     </Button>
                   </CardFooter>
                 </Card>
@@ -224,11 +226,15 @@ export default function ResearchPage() {
                     <p className="text-sm text-muted-foreground">{publication.abstract}</p>
                   </CardContent>
                   <CardFooter className="flex justify-between">
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4 mr-2" /> PDF
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/research/papers/${publication.title.toLowerCase().replace(/\s+/g, '-')}.pdf`} download>
+                        <Download className="h-4 w-4 mr-2" /> PDF
+                      </Link>
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      <ExternalLink className="h-4 w-4 mr-2" /> View Citation
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/research/citations/${publication.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                        <ExternalLink className="h-4 w-4 mr-2" /> View Citation
+                      </Link>
                     </Button>
                   </CardFooter>
                 </Card>
@@ -243,8 +249,12 @@ export default function ResearchPage() {
               collaborating on research related to LLM safety, we'd love to hear from you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button>Contact Research Team</Button>
-              <Button variant="outline">View Collaboration Guidelines</Button>
+              <Button asChild>
+                <Link href="/contact">Contact Research Team</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/research/collaboration">View Collaboration Guidelines</Link>
+              </Button>
             </div>
           </div>
         </div>

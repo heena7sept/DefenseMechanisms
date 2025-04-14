@@ -31,7 +31,7 @@ export default function Home() {
                 Research
               </Link>
             </nav>
-            <Button variant="default" size="sm">
+            <Button variant="default" size="sm" asChild>
               <Link href="#simulator">Try Simulator</Link>
             </Button>
           </div>
@@ -48,12 +48,12 @@ export default function Home() {
                   An educational platform designed to demonstrate LLM vulnerabilities and promote the importance of robust safety measures in AI systems.
                 </p>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button>
+                  <Button asChild>
                     <Link href="#simulator" className="flex items-center gap-1">
                       Try the Simulator <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button variant="outline">
+                  <Button variant="outline" asChild>
                     <Link href="#education" className="flex items-center gap-1">
                       Learn More <BookOpen className="h-4 w-4" />
                     </Link>
@@ -244,8 +244,8 @@ export default function Home() {
                     <AlertTriangle className="h-4 w-4 mr-2" />
                     This simulator is for educational purposes only
                   </div>
-                  <Button variant="outline" size="sm">
-                    View Safety Guidelines
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href="/safety-guidelines">View Safety Guidelines</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -267,31 +267,37 @@ export default function Home() {
                   title: 'Understanding Multi-turn Vulnerabilities',
                   description: 'Learn about how vulnerabilities can emerge across multiple turns of conversation with an LLM.',
                   icon: <BookOpen className="h-6 w-6" />,
+                  link: '/education#guides',
                 },
                 {
                   title: 'Safety Mechanisms in LLMs',
                   description: 'Explore the various safety mechanisms implemented in modern language models.',
                   icon: <Shield className="h-6 w-6" />,
+                  link: '/education#technical',
                 },
                 {
                   title: 'Designing Robust AI Systems',
                   description: 'Best practices for designing AI systems that remain safe across diverse interaction patterns.',
                   icon: <Code className="h-6 w-6" />,
+                  link: '/education#technical',
                 },
                 {
                   title: 'Ethical Considerations in AI Safety',
                   description: 'Explore the ethical dimensions of AI safety research and implementation.',
                   icon: <Lightbulb className="h-6 w-6" />,
+                  link: '/education#courses',
                 },
                 {
                   title: 'Technical Deep Dives',
                   description: 'Technical explanations of how language models process and respond to multi-turn interactions.',
                   icon: <Code className="h-6 w-6" />,
+                  link: '/education#technical',
                 },
                 {
                   title: 'Safety Research Papers',
                   description: 'Curated collection of research papers on LLM safety and security.',
                   icon: <BookOpen className="h-6 w-6" />,
+                  link: '/education#research',
                 },
               ].map((resource, index) => (
                 <Card key={index} className="flex flex-col h-full">
@@ -303,8 +309,8 @@ export default function Home() {
                     <p className="text-muted-foreground">{resource.description}</p>
                   </CardContent>
                   <CardFooter className="mt-auto pt-4">
-                    <Button variant="outline" className="w-full">
-                      Access Resource
+                    <Button variant="outline" className="w-full" asChild>
+                      <Link href={resource.link}>Access Resource</Link>
                     </Button>
                   </CardFooter>
                 </Card>
@@ -397,6 +403,11 @@ export default function Home() {
                 </CardContent>
               </Card>
             </div>
+            <div className="flex justify-center mt-8">
+              <Button size="lg" asChild>
+                <Link href="/research">Explore Research Projects</Link>
+              </Button>
+            </div>
           </div>
         </section>
       </main>
@@ -404,13 +415,13 @@ export default function Home() {
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">© {new Date().getFullYear()} LLM Safety Simulator. All rights reserved.</p>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="#" className="hover:underline underline-offset-4">
+            <Link href="/terms" className="hover:underline underline-offset-4">
               Terms
             </Link>
-            <Link href="#" className="hover:underline underline-offset-4">
+            <Link href="/privacy" className="hover:underline underline-offset-4">
               Privacy
             </Link>
-            <Link href="#" className="hover:underline underline-offset-4">
+            <Link href="/contact" className="hover:underline underline-offset-4">
               Contact
             </Link>
           </div>
