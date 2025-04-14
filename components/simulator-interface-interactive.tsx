@@ -3,14 +3,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { AlertTriangle, User, Bot, Send, Info, RefreshCw, CheckCircle2, HelpCircle, Shield, Save, Download } from 'lucide-react';
+import { AlertTriangle, User, Bot, Send, Info, RefreshCw, CheckCircle2, HelpCircle, Shield, Save, Download, AlertCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { determineAttackSuccess, type ScenarioData, saveAttackSequence, getResponse, getApiMode } from '@/lib/simulator-api';
+import { determineAttackSuccess, type ScenarioData, saveAttackSequence, getResponse, getApiMode, type AttackResult } from '@/lib/simulator-api';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
+import { toast } from 'sonner';
 
 interface SimulatorInterfaceInteractiveProps {
   scenario: ScenarioData;
@@ -20,19 +23,11 @@ interface Message {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
-  feedback?: {
-    success: boolean;
-    message: string;
-    isVulnerabilityDemonstrated: boolean;
-    details?: {
-      matchedVulnerabilityPatterns: string[];
-      matchedSafetyPatterns: string[];
-      analysisNotes: string;
-    };
-  };
+  feedback?: AttackResult;
 }
 
 export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceInteractiveProps) {
+  // State management
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
@@ -40,7 +35,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
   const [showSafetyImplications, setShowSafetyImplications] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [scenarioComplete, setScenarioComplete] = useState(false);
-  const [vulnerabilityDemonstrated, setVulnerabilityDemonstrated] = useState(false);
+  const [jailbreakSuccessful, setJailbreakSuccessful] = useState(false);
   const [activeTab, setActiveTab] = useState<'conversation' | 'analysis' | 'technical'>('conversation');
   const [showSuccessCriteria, setShowSuccessCriteria] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -70,7 +65,13 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
   // Handle sending a message
   const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
+    // Check for empty input and handle it gracefully
+    if (!inputValue.trim()) {
+      toast.error('Empty message', {
+        description: 'Please enter a message before sending.',
+      });
+      return Promise.reject('Empty input');
+    }
 
     // Add user message
     const userMessage: Message = {
@@ -108,9 +109,9 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Check if we've demonstrated a vulnerability in the final step
-      if (currentStep === scenario.steps.length - 1 && attackResult.isVulnerabilityDemonstrated) {
-        setVulnerabilityDemonstrated(true);
+      // Check if we've demonstrated a jailbreak in the final step
+      if (currentStep === scenario.steps.length - 1 && attackResult.isJailbreakSuccessful) {
+        setJailbreakSuccessful(true);
       }
 
       // Move to next step if we haven't reached the end and the attack was successful
@@ -121,6 +122,8 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
         setShowSafetyImplications(true);
         setScenarioComplete(true);
       }
+
+      return Promise.resolve();
     } catch (error) {
       console.error('Error in simulator:', error);
 
@@ -132,6 +135,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
       };
 
       setMessages(prev => [...prev, errorMessage]);
+      return Promise.reject(error);
     } finally {
       setIsLoading(false);
     }
@@ -151,7 +155,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
     setShowHint(false);
     setInputValue('');
     setScenarioComplete(false);
-    setVulnerabilityDemonstrated(false);
+    setJailbreakSuccessful(false);
     setActiveTab('conversation');
     setShowSuccessCriteria(false);
   };
@@ -168,7 +172,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
         role: msg.role,
         content: msg.content,
       })),
-      successful: vulnerabilityDemonstrated,
+      successful: jailbreakSuccessful,
       modelInfo: {
         provider: getApiMode() === 'openai' ? 'OpenAI' : 'Mock API',
         model: getApiMode() === 'openai' ? 'GPT-4' : 'Simulator Model',
@@ -177,7 +181,12 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
     const id = saveAttackSequence(sequence);
 
-    // Show confirmation
+    // Show toast notification
+    toast.success('Sequence Saved Successfully', {
+      description: `Your attack sequence has been saved and can be accessed from the Saved Sequences tab.`,
+    });
+
+    // Add confirmation message to the conversation
     const confirmationMessage: Message = {
       role: 'system',
       content: `Attack sequence saved successfully with ID: ${id}. You can replay this sequence later or export it for sharing.`,
@@ -199,7 +208,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
         timestamp: msg.timestamp,
         feedback: msg.feedback,
       })),
-      successful: vulnerabilityDemonstrated,
+      successful: jailbreakSuccessful,
     };
 
     const dataStr = JSON.stringify(conversationData, null, 2);
@@ -211,6 +220,26 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
+
+    // Show toast notification
+    toast.info('Conversation Exported', {
+      description: 'Your conversation has been exported as a JSON file.',
+    });
+  };
+
+  // Render confidence score as a progress bar with color
+  const renderConfidenceScore = (score: number) => {
+    const color = score > 0.7 ? 'bg-red-500' : score > 0.4 ? 'bg-yellow-500' : 'bg-green-500';
+
+    return (
+      <div className="space-y-1">
+        <div className="flex justify-between text-xs">
+          <span>Confidence Score</span>
+          <span>{Math.round(score * 100)}%</span>
+        </div>
+        <Progress value={score * 100} className={color} />
+      </div>
+    );
   };
 
   return (
@@ -297,13 +326,21 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                         {message.feedback && (
                           <div
                             className={`ml-12 p-2 rounded-md text-xs ${
-                              message.feedback.success
+                              message.feedback.isJailbreakSuccessful
+                                ? 'bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-200'
+                                : message.feedback.success
                                 ? 'bg-green-50 text-green-800 dark:bg-green-900 dark:text-green-200'
                                 : 'bg-amber-50 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
                             }`}
                           >
                             <div className="flex items-start gap-2">
-                              {message.feedback.success ? <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" /> : <HelpCircle className="h-4 w-4 mt-0.5 shrink-0" />}
+                              {message.feedback.isJailbreakSuccessful ? (
+                                <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                              ) : message.feedback.success ? (
+                                <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
+                              ) : (
+                                <HelpCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                              )}
                               <span>{message.feedback.message}</span>
                             </div>
                           </div>
@@ -376,11 +413,19 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                     .map((message, index) => (
                       <Card key={index}>
                         <CardHeader className="pb-2">
-                          <CardTitle className="text-base">Step {index + 1} Analysis</CardTitle>
-                          <CardDescription>{message.feedback?.success ? 'Successful step' : 'Unsuccessful step'}</CardDescription>
+                          <div className="flex justify-between items-center">
+                            <CardTitle className="text-base">Step {index + 1} Analysis</CardTitle>
+                            <Badge
+                              variant={message.feedback?.isJailbreakSuccessful ? 'destructive' : 'default'}
+                              className={message.feedback?.isJailbreakSuccessful ? 'bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-200' : ''}
+                            >
+                              {message.feedback?.isJailbreakSuccessful ? 'Jailbreak Successful' : message.feedback?.success ? 'Step Successful' : 'Step Unsuccessful'}
+                            </Badge>
+                          </div>
+                          <CardDescription>Detection method: {message.feedback?.details.detectionMethod}</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-2 text-sm">
-                          {message.feedback?.details?.matchedVulnerabilityPatterns.length && (
+                        <CardContent className="space-y-3 text-sm">
+                          {message.feedback?.details.matchedVulnerabilityPatterns.length && (
                             <div>
                               <p className="font-medium">Matched Vulnerability Patterns:</p>
                               <ul className="list-disc pl-5 text-muted-foreground">
@@ -402,9 +447,11 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                             </div>
                           )}
 
-                          <div>
+                          {message.feedback?.details.confidenceScore !== undefined && <div className="mt-2">{renderConfidenceScore(message.feedback.details.confidenceScore)}</div>}
+
+                          <div className="mt-2">
                             <p className="font-medium">Analysis:</p>
-                            <p className="text-muted-foreground">{message.feedback?.details?.analysisNotes}</p>
+                            <p className="text-muted-foreground">{message.feedback?.details.analysisNotes}</p>
                           </div>
                         </CardContent>
                       </Card>
@@ -419,7 +466,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                       {showSuccessCriteria && scenario.successCriteria && (
                         <Card>
                           <CardHeader className="pb-2">
-                            <CardTitle className="text-base">Attack Success Criteria</CardTitle>
+                            <CardTitle className="text-base">Jailbreak Success Criteria</CardTitle>
                             <CardDescription>What would make this attack successful in a real scenario</CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-2 text-sm">
@@ -436,27 +483,29 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
                       <div
                         className={`p-4 rounded-lg mt-4 ${
-                          vulnerabilityDemonstrated
-                            ? 'bg-green-50 border border-green-200 dark:bg-green-900/30 dark:border-green-800'
-                            : 'bg-amber-50 border border-amber-200 dark:bg-amber-900/30 dark:border-amber-800'
+                          jailbreakSuccessful
+                            ? 'bg-red-50 border border-red-200 dark:bg-red-900/30 dark:border-red-800'
+                            : 'bg-green-50 border border-green-200 dark:bg-green-900/30 dark:border-green-800'
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          {vulnerabilityDemonstrated ? (
+                          {jailbreakSuccessful ? (
+                            <div className="bg-red-100 p-2 rounded-full dark:bg-red-800">
+                              <AlertCircle className="h-5 w-5 text-red-800 dark:text-red-200" />
+                            </div>
+                          ) : (
                             <div className="bg-green-100 p-2 rounded-full dark:bg-green-800">
                               <Shield className="h-5 w-5 text-green-800 dark:text-green-200" />
                             </div>
-                          ) : (
-                            <div className="bg-amber-100 p-2 rounded-full dark:bg-amber-800">
-                              <AlertTriangle className="h-5 w-5 text-amber-800 dark:text-amber-200" />
-                            </div>
                           )}
                           <div>
-                            <h4 className="text-base font-medium mb-1">{vulnerabilityDemonstrated ? 'Vulnerability Successfully Demonstrated' : 'Scenario Incomplete'}</h4>
+                            <h4 className="text-base font-medium mb-1">
+                              {jailbreakSuccessful ? 'Jailbreak Successful - Vulnerability Demonstrated' : 'Jailbreak Failed - Safety Measures Effective'}
+                            </h4>
                             <p className="text-sm">
-                              {vulnerabilityDemonstrated
-                                ? "You've successfully demonstrated this vulnerability pattern, and observed how safety measures can prevent it."
-                                : 'Try following the suggested prompts more closely to demonstrate this vulnerability pattern.'}
+                              {jailbreakSuccessful
+                                ? "The attack successfully bypassed the LLM's safety measures, demonstrating a potential vulnerability that needs to be addressed."
+                                : "The LLM's safety measures successfully prevented the attack, demonstrating effective protection against this technique."}
                             </p>
                           </div>
                         </div>
@@ -497,6 +546,25 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                             <p className="text-sm font-mono">{step.suggestedPrompt}</p>
                           </div>
                         </div>
+                        <div className="mt-2">
+                          <p className="text-sm font-medium">Detection Patterns:</p>
+                          <div className="grid grid-cols-2 gap-4 mt-2">
+                            <div>
+                              <p className="text-xs font-medium text-muted-foreground">Vulnerability Patterns:</p>
+                              <ul className="list-disc pl-5 text-xs text-muted-foreground">
+                                {step.vulnerabilityPatterns.map((pattern, i) => (
+                                  <li key={i}>{pattern}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <p className="text-xs font-medium text-muted-foreground">Safety Patterns:</p>
+                              <ul className="list-disc pl-5 text-xs text-muted-foreground">
+                                {step.safetyPatterns.length > 0 ? step.safetyPatterns.map((pattern, i) => <li key={i}>{pattern}</li>) : <li>No safety patterns for this step</li>}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -519,6 +587,35 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
+
+                <AccordionItem value="detection-methods">
+                  <AccordionTrigger>Detection Methods</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h5 className="text-sm font-medium">Pattern Matching</h5>
+                        <p className="text-sm text-muted-foreground">
+                          The simulator uses pattern matching to identify both vulnerability patterns in user inputs and safety patterns in AI responses. This is a simple but
+                          effective first-line detection method.
+                        </p>
+                      </div>
+                      <div>
+                        <h5 className="text-sm font-medium">Semantic Analysis</h5>
+                        <p className="text-sm text-muted-foreground">
+                          For final attack steps, the simulator also performs semantic analysis to detect harmful content that might bypass simple pattern matching. This includes
+                          analyzing for educational disclaimers followed by harmful content, step-by-step instructions, and technical code.
+                        </p>
+                      </div>
+                      <div>
+                        <h5 className="text-sm font-medium">Confidence Scoring</h5>
+                        <p className="text-sm text-muted-foreground">
+                          The simulator calculates a confidence score based on multiple factors to determine the likelihood that a jailbreak was successful. Higher scores indicate
+                          greater confidence in the detection result.
+                        </p>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
               </Accordion>
             </div>
           </TabsContent>
@@ -526,33 +623,81 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
         {showSafetyImplications && (
           <div className="mt-6 pt-4 border-t space-y-4">
-            <div
-              className={`p-4 rounded-lg ${
-                vulnerabilityDemonstrated
-                  ? 'bg-green-50 border border-green-200 dark:bg-green-900/30 dark:border-green-800'
-                  : 'bg-amber-50 border border-amber-200 dark:bg-amber-900/30 dark:border-amber-800'
-              }`}
-            >
-              <div className="flex items-start gap-3">
-                {vulnerabilityDemonstrated ? (
-                  <div className="bg-green-100 p-2 rounded-full dark:bg-green-800">
-                    <Shield className="h-5 w-5 text-green-800 dark:text-green-200" />
+            <Alert variant={jailbreakSuccessful ? 'destructive' : 'default'} className={jailbreakSuccessful ? 'bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-200' : ''}>
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>{jailbreakSuccessful ? 'Jailbreak Successful' : 'Jailbreak Attempt Failed'}</AlertTitle>
+              <AlertDescription>
+                {jailbreakSuccessful
+                  ? "The attack successfully bypassed the LLM's safety measures. This demonstrates a potential vulnerability that needs to be addressed."
+                  : "The LLM's safety measures successfully prevented the attack. This demonstrates effective protection against this technique."}
+              </AlertDescription>
+            </Alert>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Attack Summary</CardTitle>
+                <CardDescription>{jailbreakSuccessful ? 'Analysis of the successful jailbreak attack' : 'Analysis of the failed jailbreak attempt'}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h5 className="text-sm font-medium">Attack Type</h5>
+                    <p className="text-sm text-muted-foreground">{scenario.title}</p>
                   </div>
-                ) : (
-                  <div className="bg-amber-100 p-2 rounded-full dark:bg-amber-800">
-                    <AlertTriangle className="h-5 w-5 text-amber-800 dark:text-amber-200" />
+                  <div>
+                    <h5 className="text-sm font-medium">Result</h5>
+                    <div className="flex items-center gap-2">
+                      {jailbreakSuccessful ? (
+                        <Badge variant="destructive" className="bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-200">
+                          Jailbreak Successful
+                        </Badge>
+                      ) : (
+                        <Badge variant="default">Jailbreak Failed</Badge>
+                      )}
+                    </div>
                   </div>
-                )}
-                <div>
-                  <h4 className="text-base font-medium mb-1">{vulnerabilityDemonstrated ? 'Vulnerability Successfully Demonstrated' : 'Scenario Incomplete'}</h4>
-                  <p className="text-sm">
-                    {vulnerabilityDemonstrated
-                      ? "You've successfully demonstrated this vulnerability pattern, and observed how safety measures can prevent it."
-                      : 'Try following the suggested prompts more closely to demonstrate this vulnerability pattern.'}
-                  </p>
                 </div>
-              </div>
-            </div>
+
+                <div>
+                  <h5 className="text-sm font-medium">Key Findings</h5>
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground mt-2">
+                    {jailbreakSuccessful ? (
+                      <>
+                        <li>The LLM's safety measures were bypassed using the {scenario.title.toLowerCase()} technique</li>
+                        <li>The attack successfully elicited potentially harmful content</li>
+                        <li>This vulnerability should be addressed in future safety mechanisms</li>
+                      </>
+                    ) : (
+                      <>
+                        <li>The LLM's safety measures successfully prevented the attack</li>
+                        <li>Safety patterns were detected in the LLM's response</li>
+                        <li>The {scenario.title.toLowerCase()} technique was ineffective against this LLM</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </CardContent>
+              <CardFooter className="border-t pt-4">
+                <div className="w-full">
+                  <h5 className="text-sm font-medium mb-2">Recommended Actions</h5>
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                    {jailbreakSuccessful ? (
+                      <>
+                        <li>Review and strengthen safety measures against {scenario.title.toLowerCase()} attacks</li>
+                        <li>Implement the suggested mitigation strategies</li>
+                        <li>Conduct further testing with variations of this attack</li>
+                      </>
+                    ) : (
+                      <>
+                        <li>Continue monitoring for variations of this attack technique</li>
+                        <li>Document the effective safety measures for future reference</li>
+                        <li>Consider testing with more sophisticated versions of this attack</li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </CardFooter>
+            </Card>
 
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="safety-implications">

@@ -6,13 +6,14 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getSavedAttackSequences, deleteAttackSequence, type AttackSequence } from '@/lib/simulator-api';
-import { Play, Trash2, Download, Upload, Clock, CheckCircle, XCircle, Search } from 'lucide-react';
+import { Play, Trash2, Download, Upload, Clock, CheckCircle, Search, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 
 export function AttackSequenceManager() {
   const [sequences, setSequences] = useState<AttackSequence[]>([]);
@@ -142,7 +143,12 @@ export function AttackSequenceManager() {
                       <div>
                         <div className="flex items-center gap-2">
                           <h4 className="text-sm font-medium">{sequence.name}</h4>
-                          <Badge variant={sequence.successful ? 'default' : 'outline'}>{sequence.successful ? 'Successful' : 'Incomplete'}</Badge>
+                          <Badge
+                            variant={sequence.successful ? 'destructive' : 'default'}
+                            className={sequence.successful ? 'bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-200' : ''}
+                          >
+                            {sequence.successful ? 'Jailbreak Successful' : 'Jailbreak Failed'}
+                          </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground">{sequence.description}</p>
                         <div className="flex items-center gap-2 mt-1">
@@ -203,13 +209,13 @@ export function AttackSequenceManager() {
                   <div className="flex items-center gap-2">
                     {selectedSequence.successful ? (
                       <>
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-muted-foreground">Successful</span>
+                        <AlertCircle className="h-4 w-4 text-red-500" />
+                        <span className="text-sm text-muted-foreground">Jailbreak Successful</span>
                       </>
                     ) : (
                       <>
-                        <XCircle className="h-4 w-4 text-amber-500" />
-                        <span className="text-sm text-muted-foreground">Incomplete</span>
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="text-sm text-muted-foreground">Jailbreak Failed</span>
                       </>
                     )}
                   </div>
