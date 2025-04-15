@@ -44,31 +44,37 @@ export default function EducationPage() {
                     title: 'Introduction to LLM Safety',
                     description: 'A beginner-friendly guide to understanding the importance of safety in language models',
                     icon: <BookOpen className="h-6 w-6" />,
+                    path: '/education/guides/introduction',
                   },
                   {
                     title: 'Multi-turn Interaction Risks',
                     description: 'Understanding how vulnerabilities can emerge across multiple turns of conversation',
                     icon: <Shield className="h-6 w-6" />,
+                    path: '/education/guides/multi-turn-risks',
                   },
                   {
                     title: 'Best Practices for Developers',
                     description: 'Practical guidelines for implementing safe LLM applications',
                     icon: <Code className="h-6 w-6" />,
+                    path: '/education/guides/best-practices',
                   },
                   {
                     title: 'Ethical Considerations in AI Safety',
                     description: 'Exploring the ethical dimensions of AI safety research and implementation',
                     icon: <Lightbulb className="h-6 w-6" />,
+                    path: '/education/guides/ethical-considerations',
                   },
                   {
                     title: 'Safety Mechanisms Explained',
                     description: 'A detailed look at the various safety mechanisms implemented in modern LLMs',
                     icon: <Shield className="h-6 w-6" />,
+                    path: '/education/guides/safety-mechanisms',
                   },
                   {
                     title: 'Future of LLM Safety',
                     description: 'Emerging trends and approaches in LLM safety research',
                     icon: <Lightbulb className="h-6 w-6" />,
+                    path: '/education/guides/future-safety',
                   },
                 ].map((resource, index) => (
                   <Card key={index} className="flex flex-col h-full">
@@ -79,7 +85,7 @@ export default function EducationPage() {
                     </CardHeader>
                     <CardFooter className="mt-auto pt-4">
                       <Button variant="outline" className="w-full" asChild>
-                        <Link href="/education/guides">Read Guide</Link>
+                        <Link href={resource.path}>Read Guide</Link>
                       </Button>
                     </CardFooter>
                   </Card>
