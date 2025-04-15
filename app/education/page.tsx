@@ -56,7 +56,7 @@ export default function EducationPage() {
                     title: 'Best Practices for Developers',
                     description: 'Practical guidelines for implementing safe LLM applications',
                     icon: <Code className="h-6 w-6" />,
-                    path: '/education/guides/best-practices',
+                    path: '/education/guides/best-practices-dev',
                   },
                   {
                     title: 'Ethical Considerations in AI Safety',
