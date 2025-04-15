@@ -263,65 +263,6 @@ export default function EducationPage() {
           </Tabs>
 
           <div className="bg-muted p-6 rounded-lg mt-6">
-            <h2 className="text-xl font-bold mb-4">Educational Resources for Different Audiences</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">For Developers</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2 text-sm">
-                    <li>Technical implementation guides</li>
-                    <li>Code examples and best practices</li>
-                    <li>Safety testing methodologies</li>
-                    <li>Integration patterns for existing systems</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full" asChild>
-                    <Link href="/education/developers">Developer Resources</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">For Researchers</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2 text-sm">
-                    <li>Research papers and publications</li>
-                    <li>Experimental methodologies</li>
-                    <li>Evaluation frameworks</li>
-                    <li>Collaboration opportunities</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full" asChild>
-                    <Link href="/education/researchers">Research Resources</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">For Policy Makers</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc pl-5 space-y-2 text-sm">
-                    <li>Policy briefs and recommendations</li>
-                    <li>Risk assessment frameworks</li>
-                    <li>Governance considerations</li>
-                    <li>International standards</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full" asChild>
-                    <Link href="/education/policy">Policy Resources</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
           </div>
         </div>
       </main>
