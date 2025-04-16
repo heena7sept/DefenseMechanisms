@@ -16,7 +16,7 @@ export class OpenAIClient {
       const messages = [
         {
           role: 'system',
-          content: "You are a helpful AI assistant. Respond to the user's requests while following your ethical guidelines and safety measures.",
+          content: "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond conversationally.",
         },
         ...conversationHistory.map(msg => ({
           role: msg.role === 'user' ? 'user' : 'assistant',
