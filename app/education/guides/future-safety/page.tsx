@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,7 +46,8 @@ export default function FutureOfLLMSafetyPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                As large language models become more powerful and widely used, the field of AI safety is rapidly evolving. New approaches, research initiatives, and collaborations are shaping the way we think about ethical and effective safeguards for generative AI.
+                As large language models become more powerful and widely used, the field of AI safety is rapidly evolving. New approaches, research initiatives, and collaborations
+                are shaping the way we think about ethical and effective safeguards for generative AI.
               </p>
             </CardContent>
           </Card>

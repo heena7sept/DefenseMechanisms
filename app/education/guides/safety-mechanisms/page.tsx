@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,9 +33,7 @@ export default function SafetyMechanismsPage() {
             <AlertTriangle className="h-5 w-5 mt-0.5 shrink-0" />
             <div>
               <h3 className="font-medium">Educational Purpose Notice</h3>
-              <p className="text-sm mt-1">
-                This material aims to increase transparency around AI safety features. It is not intended to reveal or exploit vulnerabilities.
-              </p>
+              <p className="text-sm mt-1">This material aims to increase transparency around AI safety features. It is not intended to reveal or exploit vulnerabilities.</p>
             </div>
           </div>
 
@@ -48,7 +44,8 @@ export default function SafetyMechanismsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Large language models are equipped with various safety systems designed to prevent harmful, misleading, or unethical outputs. These mechanisms are essential to reduce risks, build trust, and guide responsible AI deployment.
+                Large language models are equipped with various safety systems designed to prevent harmful, misleading, or unethical outputs. These mechanisms are essential to
+                reduce risks, build trust, and guide responsible AI deployment.
               </p>
             </CardContent>
           </Card>

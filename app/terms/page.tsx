@@ -1,4 +1,3 @@
-// Add Terms of Service page
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Shield } from 'lucide-react';

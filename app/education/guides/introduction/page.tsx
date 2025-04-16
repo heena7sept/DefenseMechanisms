@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,9 +33,7 @@ export default function IntroductionToLLMSafetyPage() {
             <AlertTriangle className="h-5 w-5 mt-0.5 shrink-0" />
             <div>
               <h3 className="font-medium">Educational Purpose Notice</h3>
-              <p className="text-sm mt-1">
-                This page introduces essential safety concepts for those new to working with or using large language models.
-              </p>
+              <p className="text-sm mt-1">This page introduces essential safety concepts for those new to working with or using large language models.</p>
             </div>
           </div>
 
@@ -47,7 +43,8 @@ export default function IntroductionToLLMSafetyPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                LLM safety refers to the practices, technologies, and principles that ensure large language models operate in ways that are ethical, reliable, and aligned with human values. It's a growing area of focus as these models are used in increasingly sensitive and impactful settings.
+                LLM safety refers to the practices, technologies, and principles that ensure large language models operate in ways that are ethical, reliable, and aligned with
+                human values. It's a growing area of focus as these models are used in increasingly sensitive and impactful settings.
               </p>
             </CardContent>
           </Card>

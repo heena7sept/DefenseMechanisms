@@ -261,8 +261,7 @@ export default function EducationPage() {
             </TabsContent>
           </Tabs>
 
-          <div className="bg-muted p-6 rounded-lg mt-6">
-          </div>
+          <div className="bg-muted p-6 rounded-lg mt-6"></div>
         </div>
       </main>
       <footer className="w-full border-t py-6">

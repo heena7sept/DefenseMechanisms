@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,7 +46,8 @@ export default function DeveloperBestPracticesPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                When developing applications using LLMs, safety should be a core design consideration. Developers must proactively anticipate misuse, ensure clarity in outputs, and respect user privacy and well-being.
+                When developing applications using LLMs, safety should be a core design consideration. Developers must proactively anticipate misuse, ensure clarity in outputs, and
+                respect user privacy and well-being.
               </p>
             </CardContent>
           </Card>
@@ -98,7 +97,8 @@ export default function DeveloperBestPracticesPage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Developers play a key role in shaping the safety profile of AI systems. Ethical development includes documenting limitations, warning users about misuse, and collaborating with safety researchers and impacted communities.
+                Developers play a key role in shaping the safety profile of AI systems. Ethical development includes documenting limitations, warning users about misuse, and
+                collaborating with safety researchers and impacted communities.
               </p>
             </CardContent>
           </Card>

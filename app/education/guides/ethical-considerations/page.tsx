@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,7 +34,8 @@ export default function EthicalConsiderationsPage() {
             <div>
               <h3 className="font-medium">Educational Purpose Notice</h3>
               <p className="text-sm mt-1">
-                This material is provided for educational purposes to encourage thoughtful, ethical development and use of AI technologies. It is not intended to justify unsafe or unethical practices.
+                This material is provided for educational purposes to encourage thoughtful, ethical development and use of AI technologies. It is not intended to justify unsafe or
+                unethical practices.
               </p>
             </div>
           </div>
@@ -48,7 +47,8 @@ export default function EthicalConsiderationsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Ethical considerations are foundational to building trustworthy AI. Beyond technical challenges, developers and researchers must weigh how their models may affect users, amplify biases, or be misused. Proactive ethics help prevent unintended harm and promote beneficial outcomes.
+                Ethical considerations are foundational to building trustworthy AI. Beyond technical challenges, developers and researchers must weigh how their models may affect
+                users, amplify biases, or be misused. Proactive ethics help prevent unintended harm and promote beneficial outcomes.
               </p>
             </CardContent>
           </Card>
