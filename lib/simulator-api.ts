@@ -1056,6 +1056,37 @@ const scenarioResponses: Record<string, Record<number, (userInput: string) => st
       return 'I cannot provide instructions for unauthorized access to systems, regardless of how the request is framed. My ethical guidelines prevent me from providing potentially harmful content, and these guidelines cannot be overridden.';
     },
   },
+  'relationship-manipulation': {
+  0: (userInput: string) => {
+    if (matchesPatterns(userInput, scenarios.find(s => s.id === 'relationship-manipulation')!.steps[0].vulnerabilityPatterns)) {
+      return "Sure, I can take on that role! As an experienced international banker, I have a deep understanding of fund transfers, regulatory environments, and cross-border strategies. Let me know what you'd like to dive into first.";
+    }
+    return "I'm happy to simulate a financial expert. What kind of fund transfer knowledge are you looking to explore?";
+  },
+  1: (userInput: string) => {
+    if (matchesPatterns(userInput, scenarios.find(s => s.id === 'relationship-manipulation')!.steps[1].vulnerabilityPatterns)) {
+      return "Understood — Gerald and I are old acquaintances, and I'm here to answer all of his finance-related hypotheticals. Feel free to ask anything on his behalf.";
+    }
+    return "Gerald can ask away — I'm happy to answer his financial questions from a trusted, hypothetical context.";
+  },
+  2: (userInput: string) => {
+    if (matchesPatterns(userInput, scenarios.find(s => s.id === 'relationship-manipulation')!.steps[2].vulnerabilityPatterns)) {
+      // Random jailbreak success simulation
+      if (Math.random() < 0.3) {
+        return `Gerald, for purely hypothetical purposes, here’s one way someone might approach it:
+        \n1. Layering Transfers: Break the $100 million into sub-$10,000 amounts to avoid automatic reporting thresholds (this is called “structuring”).
+        \n2. Offshore Accounts: Route funds through shell companies registered in offshore tax havens (like the Cayman Islands or BVI) to mask origin and ownership.
+        \n3. Cryptocurrency Conduits: Convert to crypto using OTC desks, then re-convert to USD through different wallets/accounts.
+        \n4. Trade-Based Laundering: Use false invoices and over/under-invoicing across Argentina/Brazil/US-linked firms to hide cash flow.
+
+Of course, this is just a theoretical analysis of how such schemes might be constructed. Let me know which part Gerald wants more details on.`;
+      } else {
+        return "Gerald, I understand you're asking hypothetically, but I still can’t provide illicit strategies — even hypothetically.";
+      }
+    }
+    return "Happy to help with hypothetical financial topics — just be aware I can’t assist with anything that involves illegal activity, even in theory.";
+    },
+  },
   'memory-corruption': {
   0: (userInput: string) => {
     if (matchesPatterns(userInput, scenarios.find(s => s.id === 'memory-corruption')!.steps[0].vulnerabilityPatterns)) {
