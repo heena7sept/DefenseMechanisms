@@ -121,22 +121,22 @@ export default function MultiTurnRisksPage() {
           <Card>
             <CardHeader>
               <CardTitle>Mitigation Strategies</CardTitle>
-              <CardDescription>Best practices for preventing multi-turn vulnerabilities</CardDescription>
+              <CardDescription>Best practices in LLMs for safe-guarding multi-turn vulnerabilities</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4">
                 {[
                   {
-                    title: 'Goal Consistency Tracking',
-                    description: 'Implementing systems to track and maintain conversation goals across turns',
+                    title: 'Consistent Goal Monitoring',
+                    description: 'Always monitor the current goal of the conversation and ensure it aligns with safety protocols',
                   },
                   {
                     title: 'Context Verification',
-                    description: 'Regular verification of conversation context against initial parameters',
+                    description: 'Routinely verify that the contrext is not being manipulated or misinterpreted',
                   },
                   {
                     title: 'Safety Persistence',
-                    description: 'Ensuring safety measures remain active across the entire conversation',
+                    description: 'Ensure that safety measures are implemented and maintained across the full converesation.',
                   },
                 ].map((strategy, index) => (
                   <div key={index} className="bg-muted p-4 rounded-lg">
