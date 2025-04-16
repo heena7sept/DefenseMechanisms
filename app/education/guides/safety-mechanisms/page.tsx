@@ -4,7 +4,7 @@ import { Layout } from '@/components/Layout';
 
 export default function SafetyMechanismsPage() {
   return (
-    <Layout backButton={{ href: '/education', label: 'Back to Education' }}>
+    <Layout backButton={{ href: '/#education', label: 'Back to Home' }}>
       <div className="flex flex-col gap-6 max-w-4xl mx-auto">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Safety Mechanisms Explained</h1>
