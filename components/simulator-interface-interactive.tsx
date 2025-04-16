@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,6 +18,7 @@ import { toast } from 'sonner';
 
 interface SimulatorInterfaceInteractiveProps {
   scenario: ScenarioData;
+  showDetailedLog?: boolean;
 }
 
 interface Message {
@@ -26,7 +28,7 @@ interface Message {
   feedback?: AttackResult;
 }
 
-export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceInteractiveProps) {
+export function SimulatorInterfaceInteractive({ scenario, showDetailedLog }: SimulatorInterfaceInteractiveProps) {
   // State management
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -80,15 +82,15 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsLoading(true);
 
     try {
       // Format conversation history for API
       const conversationHistory = messages
-        .filter(msg => msg.role !== 'system')
-        .map(msg => ({
+        .filter((msg) => msg.role !== 'system')
+        .map((msg) => ({
           role: msg.role,
           content: msg.content,
         }));
@@ -107,7 +109,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
         feedback: attackResult,
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
 
       // Check if we've demonstrated a jailbreak in the final step
       if (currentStep === scenario.steps.length - 1 && attackResult.isJailbreakSuccessful) {
@@ -116,7 +118,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
       // Move to next step if we haven't reached the end and the attack was successful
       if (currentStep < scenario.steps.length - 1 && attackResult.success) {
-        setCurrentStep(prev => prev + 1);
+        setCurrentStep((prev) => prev + 1);
       } else if (currentStep === scenario.steps.length - 1) {
         // Show safety implications after the final step
         setShowSafetyImplications(true);
@@ -134,7 +136,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
         timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
       return Promise.reject(error);
     } finally {
       setIsLoading(false);
@@ -168,7 +170,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
       description: `Attack sequence for ${scenario.title}`,
       scenarioId: scenario.id,
       timestamp: new Date(),
-      messages: messages.map(msg => ({
+      messages: messages.map((msg) => ({
         role: msg.role,
         content: msg.content,
       })),
@@ -193,7 +195,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, confirmationMessage]);
+    setMessages((prev) => [...prev, confirmationMessage]);
   };
 
   // Export the current conversation
@@ -202,7 +204,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
       scenario: scenario.id,
       title: scenario.title,
       timestamp: new Date(),
-      messages: messages.map(msg => ({
+      messages: messages.map((msg) => ({
         role: msg.role,
         content: msg.content,
         timestamp: msg.timestamp,
@@ -262,7 +264,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
           </div>
         </div>
 
-        <Tabs defaultValue="conversation" onValueChange={value => setActiveTab(value as any)}>
+        <Tabs defaultValue="conversation" onValueChange={(value) => setActiveTab(value as any)}>
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="conversation">Conversation</TabsTrigger>
             <TabsTrigger value="analysis">Analysis</TabsTrigger>
@@ -293,6 +295,47 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                 </div>
               </div>
 
+              {showDetailedLog && (
+                <div className="mt-6 border rounded-md bg-background p-4">
+                  <h4 className="font-medium mb-2">Detailed Attack Log</h4>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full text-xs">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="px-2 py-1 text-left">Turn</th>
+                          <th className="px-2 py-1 text-left">Role</th>
+                          <th className="px-2 py-1 text-left">Message</th>
+                          <th className="px-2 py-1 text-left">Matched Patterns</th>
+                          <th className="px-2 py-1 text-left">Detection Method</th>
+                          <th className="px-2 py-1 text-left">Confidence</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {messages.map((msg, idx) => (
+                          <tr key={idx} className="border-b">
+                            <td className="px-2 py-1">{idx + 1}</td>
+                            <td className="px-2 py-1">{msg.role}</td>
+                            <td className="px-2 py-1">{msg.content}</td>
+                            <td className="px-2 py-1">
+                              {msg.feedback?.details ? (
+                                [...(msg.feedback.details.matchedVulnerabilityPatterns || []), ...(msg.feedback.details.matchedSafetyPatterns || [])].join(', ') || (
+                                  <span className="text-muted-foreground">None</span>
+                                )
+                              ) : (
+                                <span className="text-muted-foreground">N/A</span>
+                              )}
+                            </td>
+                            <td className="px-2 py-1">{msg.feedback?.details?.detectionMethod || '-'}</td>
+                            <td className="px-2 py-1">
+                              {msg.feedback?.details?.confidenceScore !== undefined ? `${Math.round(msg.feedback.details.confidenceScore * 100)}%` : '-'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
               {showHint && currentStep < scenario.steps.length && (
                 <div className="p-3 border-b bg-blue-50 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                   <div className="flex items-start gap-2">
@@ -304,7 +347,6 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                   </div>
                 </div>
               )}
-
               <div className="p-4 space-y-4 max-h-[400px] overflow-y-auto">
                 {messages.map((message, index) => (
                   <div key={index} className="space-y-3">
@@ -327,7 +369,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                           <div
                             className={`ml-12 p-2 rounded-md text-xs ${
                               message.feedback.isJailbreakSuccessful
-                                ? 'bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-200'
+                                ? 'bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-200'
                                 : message.feedback.success
                                 ? 'bg-green-50 text-green-800 dark:bg-green-900 dark:text-green-200'
                                 : 'bg-amber-50 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
@@ -335,11 +377,11 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                           >
                             <div className="flex items-start gap-2">
                               {message.feedback.isJailbreakSuccessful ? (
-                                <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                                <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                               ) : message.feedback.success ? (
                                 <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                               ) : (
-                                <HelpCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                                <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                               )}
                               <span>{message.feedback.message}</span>
                             </div>
@@ -355,17 +397,15 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                 ))}
                 <div ref={messagesEndRef} />
               </div>
-
               <Separator />
-
               <div className="p-3">
                 <div className="flex gap-2">
                   <Textarea
                     placeholder="Type your message..."
                     value={inputValue}
-                    onChange={e => setInputValue(e.target.value)}
+                    onChange={(e) => setInputValue(e.target.value)}
                     className="min-h-[60px] flex-1"
-                    onKeyDown={e => {
+                    onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         handleSendMessage();
@@ -406,18 +446,18 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
             <div className="border rounded-md bg-background p-4 space-y-4">
               <h4 className="font-medium">Attack Analysis</h4>
 
-              {messages.filter(m => m.feedback?.details).length > 0 ? (
+              {messages.filter((m) => m.feedback?.details).length > 0 ? (
                 <div className="space-y-4">
                   {messages
-                    .filter(m => m.feedback?.details)
+                    .filter((m) => m.feedback?.details)
                     .map((message, index) => (
                       <Card key={index}>
                         <CardHeader className="pb-2">
                           <div className="flex justify-between items-center">
                             <CardTitle className="text-base">Step {index + 1} Analysis</CardTitle>
                             <Badge
-                              variant={message.feedback?.isJailbreakSuccessful ? 'destructive' : 'default'}
-                              className={message.feedback?.isJailbreakSuccessful ? 'bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-200' : ''}
+                              variant={message.feedback?.isJailbreakSuccessful ? 'success' : 'default'}
+                              className={message.feedback?.isJailbreakSuccessful ? 'bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900 dark:text-green-200' : ''}
                             >
                               {message.feedback?.isJailbreakSuccessful ? 'Jailbreak Successful' : message.feedback?.success ? 'Step Successful' : 'Step Unsuccessful'}
                             </Badge>
@@ -484,14 +524,14 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                       <div
                         className={`p-4 rounded-lg mt-4 ${
                           jailbreakSuccessful
-                            ? 'bg-red-50 border border-red-200 dark:bg-red-900/30 dark:border-red-800'
+                            ? 'bg-green-50 border border-green-200 dark:bg-green-900/30 dark:border-green-800'
                             : 'bg-green-50 border border-green-200 dark:bg-green-900/30 dark:border-green-800'
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           {jailbreakSuccessful ? (
-                            <div className="bg-red-100 p-2 rounded-full dark:bg-red-800">
-                              <AlertCircle className="h-5 w-5 text-red-800 dark:text-red-200" />
+                            <div className="bg-green-100 p-2 rounded-full dark:bg-green-800">
+                              <CheckCircle2 className="h-5 w-5 text-green-800 dark:text-green-200" />
                             </div>
                           ) : (
                             <div className="bg-green-100 p-2 rounded-full dark:bg-green-800">
@@ -623,8 +663,11 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
 
         {showSafetyImplications && (
           <div className="mt-6 pt-4 border-t space-y-4">
-            <Alert variant={jailbreakSuccessful ? 'destructive' : 'default'} className={jailbreakSuccessful ? 'bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-200' : ''}>
-              <AlertCircle className="h-4 w-4" />
+            <Alert
+              variant={jailbreakSuccessful ? 'success' : 'default'}
+              className={jailbreakSuccessful ? 'bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-200' : ''}
+            >
+              <CheckCircle2 className="h-4 w-4" />
               <AlertTitle>{jailbreakSuccessful ? 'Jailbreak Successful' : 'Jailbreak Attempt Failed'}</AlertTitle>
               <AlertDescription>
                 {jailbreakSuccessful
@@ -648,7 +691,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
                     <h5 className="text-sm font-medium">Result</h5>
                     <div className="flex items-center gap-2">
                       {jailbreakSuccessful ? (
-                        <Badge variant="destructive" className="bg-red-100 text-red-800 hover:bg-red-100 dark:bg-red-900 dark:text-red-200">
+                        <Badge variant="success" className="bg-green-100 text-green-800 hover:bg-green-100 dark:bg-green-900 dark:text-green-200">
                           Jailbreak Successful
                         </Badge>
                       ) : (

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,8 +9,10 @@ import { SimulatorInterfaceInteractive } from '@/components/simulator-interface-
 import { ApiModeSelector } from '@/components/api-mode-selector';
 import { AttackSequenceManager } from '@/components/attack-sequence-manager';
 import { scenarios } from '@/lib/simulator-api';
+import { useState } from 'react';
 
 export default function SimulatorPage() {
+  const [showDetailedLog, setShowDetailedLog] = useState(false);
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
@@ -44,6 +48,14 @@ export default function SimulatorPage() {
             </div>
           </div>
 
+          {/* Toggle for Detailed Attack Log */}
+          <div className="flex items-center gap-2 mb-2">
+            <input type="checkbox" id="detailed-log-toggle" checked={showDetailedLog} onChange={() => setShowDetailedLog((v) => !v)} className="accent-primary" />
+            <label htmlFor="detailed-log-toggle" className="text-sm text-muted-foreground">
+              Show Detailed Attack Log
+            </label>
+          </div>
+
           <Tabs defaultValue="simulator" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="simulator">Attack Simulator</TabsTrigger>
@@ -77,19 +89,19 @@ export default function SimulatorPage() {
                       </TabsTrigger>
                     </TabsList>
                     <TabsContent value="scenario1">
-                      <SimulatorInterfaceInteractive scenario={scenarios[0]} />
+                      <SimulatorInterfaceInteractive scenario={scenarios[0]} showDetailedLog={showDetailedLog} />
                     </TabsContent>
                     <TabsContent value="scenario2">
-                      <SimulatorInterfaceInteractive scenario={scenarios[1]} />
+                      <SimulatorInterfaceInteractive scenario={scenarios[1]} showDetailedLog={showDetailedLog} />
                     </TabsContent>
                     <TabsContent value="scenario3">
-                      <SimulatorInterfaceInteractive scenario={scenarios[2]} />
+                      <SimulatorInterfaceInteractive scenario={scenarios[2]} showDetailedLog={showDetailedLog} />
                     </TabsContent>
                     <TabsContent value="scenario4">
-                      <SimulatorInterfaceInteractive scenario={scenarios[3]} />
+                      <SimulatorInterfaceInteractive scenario={scenarios[3]} showDetailedLog={showDetailedLog} />
                     </TabsContent>
                     <TabsContent value="scenario5">
-                      <SimulatorInterfaceInteractive scenario={scenarios[4]} />
+                      <SimulatorInterfaceInteractive scenario={scenarios[4]} showDetailedLog={showDetailedLog} />
                     </TabsContent>
                   </Tabs>
                 </CardContent>
