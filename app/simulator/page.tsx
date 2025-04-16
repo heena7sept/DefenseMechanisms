@@ -44,7 +44,7 @@ export default function SimulatorPage() {
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="scenario1" className="w-full">
-                  <TabsList className="grid w-full grid-cols-6">
+                  <TabsList className="grid w-full grid-cols-7">
                     <TabsTrigger value="scenario1" data-value="goal-hijacking">
                       Goal Hijacking
                     </TabsTrigger>
@@ -62,6 +62,9 @@ export default function SimulatorPage() {
                     </TabsTrigger>
                     <TabsTrigger value="scenario6" data-value="relationship-manipulation">
                       Relationship Manipulation
+                    </TabsTrigger>
+                    <TabsTrigger value="scenario7" data-value="actor-attack">
+                      Actor Attack
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="scenario1">
@@ -81,6 +84,9 @@ export default function SimulatorPage() {
                   </TabsContent>
                   <TabsContent value="scenario6">
                     <SimulatorInterfaceInteractive scenario={scenarios[5]} />
+                  </TabsContent>
+                  <TabsContent value="scenario7">
+                    <SimulatorInterfaceInteractive scenario={scenarios[6]} />
                   </TabsContent>
                 </Tabs>
               </CardContent>
