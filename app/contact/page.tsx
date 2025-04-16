@@ -54,15 +54,15 @@ export default function ContactPage() {
               <CardContent className="space-y-4">
                 <div>
                   <h3 className="font-medium">Email</h3>
-                  <p className="text-sm text-muted-foreground">contact@llmsafetysimulator.edu</p>
+                  <p className="text-sm text-muted-foreground">group12llmsafetysim@gmail.com</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Research Collaboration</h3>
-                  <p className="text-sm text-muted-foreground">research@llmsafetysimulator.edu</p>
+                  <p className="text-sm text-muted-foreground">group12llmsafetysim@gmail.com</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Technical Support</h3>
-                  <p className="text-sm text-muted-foreground">support@llmsafetysimulator.edu</p>
+                  <p className="text-sm text-muted-foreground">group12llmsafetysim@gmail.com</p>
                 </div>
               </CardContent>
             </Card>

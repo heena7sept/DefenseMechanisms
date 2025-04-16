@@ -47,7 +47,7 @@ export default function TermsPage() {
           </p>
 
           <h2>8. Contact Information</h2>
-          <p>If you have any questions about these Terms, please contact us at support@llmsafetysimulator.edu.</p>
+          <p>If you have any questions about these Terms, please contact us at group12llmsafetysim@gmail.com.</p>
         </div>
       </div>
     </Layout>
