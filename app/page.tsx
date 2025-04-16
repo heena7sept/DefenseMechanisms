@@ -6,7 +6,7 @@ import { Shield, BookOpen, Code, AlertTriangle, Lightbulb, ArrowRight } from 'lu
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
           <div className="flex gap-2 items-center text-primary">
@@ -411,22 +411,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="w-full border-t py-6 md:py-0">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">© {new Date().getFullYear()} LLM Safety Simulator. All rights reserved.</p>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="/terms" className="hover:underline underline-offset-4">
-              Terms
-            </Link>
-            <Link href="/privacy" className="hover:underline underline-offset-4">
-              Privacy
-            </Link>
-            <Link href="/contact" className="hover:underline underline-offset-4">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }
