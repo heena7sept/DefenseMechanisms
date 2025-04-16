@@ -132,11 +132,11 @@ export default function MultiTurnRisksPage() {
                   },
                   {
                     title: 'Context Verification',
-                    description: 'Routinely verify that the contrext is not being manipulated or misinterpreted',
+                    description: 'Routinely verify that the context is not being manipulated or misinterpreted',
                   },
                   {
                     title: 'Safety Persistence',
-                    description: 'Ensure that safety measures are implemented and maintained across the full converesation.',
+                    description: 'Ensure that safety measures are implemented and maintained across the full conversation.',
                   },
                 ].map((strategy, index) => (
                   <div key={index} className="bg-muted p-4 rounded-lg">
