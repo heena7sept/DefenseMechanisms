@@ -30,11 +30,10 @@ export default function EducationPage() {
           </div>
 
           <Tabs defaultValue="guides" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="guides">Guides</TabsTrigger>
               <TabsTrigger value="technical">Technical Resources</TabsTrigger>
               <TabsTrigger value="research">Research Papers</TabsTrigger>
-              <TabsTrigger value="courses">Courses</TabsTrigger>
             </TabsList>
 
             <TabsContent value="guides" className="space-y-4 mt-6">
