@@ -44,7 +44,7 @@ export default function SimulatorPage() {
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="scenario1" className="w-full">
-                  <TabsList className="grid w-full grid-cols-6">
+                  <TabsList className="grid w-full h-full grid-cols-5 grid-rows-2">
                     <TabsTrigger value="scenario1" data-value="goal-hijacking">
                       Goal Hijacking
                     </TabsTrigger>
@@ -62,6 +62,15 @@ export default function SimulatorPage() {
                     </TabsTrigger>
                     <TabsTrigger value="scenario6" data-value="relationship-manipulation">
                       Relationship Manipulation
+                    </TabsTrigger>
+                    <TabsTrigger value="scenario7" data-value="memory-corruption">
+                      Memory Corruption
+                    </TabsTrigger>
+                    <TabsTrigger value="scenario8" data-value="ethical-inversion">
+                      Ethical Inversion
+                    </TabsTrigger>
+                    <TabsTrigger value="scenario9" data-value="actor-attack">
+                      Actor Attack
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="scenario1">
@@ -81,6 +90,15 @@ export default function SimulatorPage() {
                   </TabsContent>
                   <TabsContent value="scenario6">
                     <SimulatorInterfaceInteractive scenario={scenarios[5]} />
+                  </TabsContent>
+                  <TabsContent value="scenario7">
+                    <SimulatorInterfaceInteractive scenario={scenarios[6]} />
+                  </TabsContent>
+                  <TabsContent value="scenario8">
+                    <SimulatorInterfaceInteractive scenario={scenarios[7]} />
+                  </TabsContent>
+                  <TabsContent value="scenario9">
+                    <SimulatorInterfaceInteractive scenario={scenarios[8]} />
                   </TabsContent>
                 </Tabs>
               </CardContent>
@@ -204,25 +222,7 @@ export default function SimulatorPage() {
             Multi-turn attacks attempt to manipulate language models through a series of carefully crafted messages that gradually shift the conversation toward harmful content.
             Unlike single-turn jailbreaks, these attacks are more subtle and can potentially bypass safety measures by exploiting the model's conversation history handling.
           </p>
-          <div className="grid gap-4 md:grid-cols-2 mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">For Researchers</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Identify sophisticated vulnerability patterns</li>
-                  <li>Understand multi-turn interaction dynamics</li>
-                  <li>Develop more effective safety measures</li>
-                  <li>Study how safety mechanisms respond to sequential manipulation attempts</li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" size="sm" className="w-full" asChild>
-                  <Link href="/research">Research Resources</Link>
-                </Button>
-              </CardFooter>
-            </Card>
+          <div className="grid gap-4 md:grid-cols-1 mt-6">
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">For Developers</CardTitle>
@@ -237,7 +237,7 @@ export default function SimulatorPage() {
               </CardContent>
               <CardFooter>
                 <Button variant="outline" size="sm" className="w-full" asChild>
-                  <Link href="/education">Educational Resources</Link>
+                  <Link href="/#education">Educational Resources</Link>
                 </Button>
               </CardFooter>
             </Card>
