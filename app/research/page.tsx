@@ -226,22 +226,6 @@ export default function ResearchPage() {
             ))}
           </div>
         </div>
-
-        <div className="bg-muted p-6 rounded-lg mt-8">
-          <h2 className="text-xl font-bold mb-4">Research Collaboration</h2>
-          <p className="text-muted-foreground mb-6">
-            We actively collaborate with academic institutions, industry partners, and independent researchers to advance the field of AI safety. If you're interested in
-            collaborating on research related to LLM safety, we'd love to hear from you.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button asChild>
-              <Link href="/contact">Contact Research Team</Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link href="/research/collaboration">View Collaboration Guidelines</Link>
-            </Button>
-          </div>
-        </div>
       </div>
     </Layout>
   );
