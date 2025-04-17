@@ -28,7 +28,7 @@ export default function Home() {
               <Link href="#education" className="text-sm font-medium transition-colors hover:text-primary">
                 Education
               </Link>
-              <Link href="/researchers" className="text-sm font-medium transition-colors hover:text-primary">
+              <Link href="#research" className="text-sm font-medium transition-colors hover:text-primary">
                 Research
               </Link>
             </nav>
@@ -266,40 +266,40 @@ export default function Home() {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-12">
               {[
                 {
-                  title: 'Introduction to LLM Safety',
-                  description: 'A beginner-friendly guide to understanding the importance of safety in language models',
+                  title: 'Understanding Multi-turn Vulnerabilities',
+                  description: 'Learn about how vulnerabilities can emerge across multiple turns of conversation with an LLM.',
                   icon: <BookOpen className="h-6 w-6" />,
-                  link: '/education/guides/introduction',
+                  link: '/education#guides',
                 },
                 {
-                  title: 'Multi-turn Interaction Risks',
-                  description: 'Understanding how vulnerabilities can emerge across multiple turns of conversation',
+                  title: 'Safety Mechanisms in LLMs',
+                  description: 'Explore the various safety mechanisms implemented in modern language models.',
                   icon: <Shield className="h-6 w-6" />,
-                  link: '/education/guides/multi-turn-risks',
+                  link: '/education#technical',
                 },
                 {
-                  title: 'Best Practices for Developers',
-                  description: 'Practical guidelines for implementing safe LLM applications',
+                  title: 'Designing Robust AI Systems',
+                  description: 'Best practices for designing AI systems that remain safe across diverse interaction patterns.',
                   icon: <Code className="h-6 w-6" />,
-                  link: '/education/guides/best-practices-dev',
+                  link: '/education#technical',
                 },
                 {
                   title: 'Ethical Considerations in AI Safety',
-                  description: 'Exploring the ethical dimensions of AI safety research and implementation',
+                  description: 'Explore the ethical dimensions of AI safety research and implementation.',
                   icon: <Lightbulb className="h-6 w-6" />,
-                  link: '/education/guides/ethical-considerations',
+                  link: '/education#courses',
                 },
                 {
-                  title: 'Safety Mechanisms Explained',
-                  description: 'A detailed look at the various safety mechanisms implemented in modern LLMs',
-                  icon: <Shield className="h-6 w-6" />,
-                  link: '/education/guides/safety-mechanisms',
+                  title: 'Technical Deep Dives',
+                  description: 'Technical explanations of how language models process and respond to multi-turn interactions.',
+                  icon: <Code className="h-6 w-6" />,
+                  link: '/education#technical',
                 },
                 {
-                  title: 'Future of LLM Safety',
-                  description: 'Emerging trends and approaches in LLM safety research',
-                  icon: <Lightbulb className="h-6 w-6" />,
-                  link: '/education/guides/future-safety',
+                  title: 'Safety Research Papers',
+                  description: 'Curated collection of research papers on LLM safety and security.',
+                  icon: <BookOpen className="h-6 w-6" />,
+                  link: '/education#research',
                 },
               ].map((resource, index) => (
                 <Card key={index} className="flex flex-col h-full">
@@ -317,6 +317,93 @@ export default function Home() {
                   </CardFooter>
                 </Card>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="research" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
+          <div className="container px-4 md:px-6">
+            <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
+              <h2 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">Research & Development</h2>
+              <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+                Our ongoing research efforts to improve LLM safety and develop more robust AI systems.
+              </p>
+            </div>
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Research Methodology</CardTitle>
+                  <CardDescription>Our approach to studying multi-turn vulnerabilities</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                        <BookOpen className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">Literature Review</h3>
+                        <p className="text-sm text-muted-foreground">Comprehensive analysis of existing research on LLM vulnerabilities</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                        <Code className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">Scenario Development</h3>
+                        <p className="text-sm text-muted-foreground">Creation of realistic scenarios that demonstrate potential vulnerabilities</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                        <Shield className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">Safety Measure Testing</h3>
+                        <p className="text-sm text-muted-foreground">Evaluation of various safety measures and their effectiveness</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Future Directions</CardTitle>
+                  <CardDescription>Prospective research and development initiatives</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                        <Lightbulb className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">Advanced Detection Methods</h3>
+                        <p className="text-sm text-muted-foreground">Developing more sophisticated methods for detecting potential attacks</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                        <Shield className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">Robust Safety Frameworks</h3>
+                        <p className="text-sm text-muted-foreground">Creating comprehensive safety frameworks for multi-turn interactions</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                        <BookOpen className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium">Educational Outreach</h3>
+                        <p className="text-sm text-muted-foreground">Expanding educational resources for developers and researchers</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>

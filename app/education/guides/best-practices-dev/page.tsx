@@ -4,7 +4,7 @@ import { Layout } from '@/components/Layout';
 
 export default function DeveloperBestPracticesPage() {
   return (
-    <Layout backButton={{ href: '/#education', label: 'Back to Home' }}>
+    <Layout backButton={{ href: '/education', label: 'Back to Education' }}>
       <div className="flex flex-col gap-6 max-w-4xl mx-auto">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Best Practices for Developers</h1>
