@@ -1,12 +1,25 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Layout } from '@/components/Layout';
+import Form from 'next/form';
 
 export default function ContactPage() {
+  function handleSubmit(formData: FormData) {
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const subject = formData.get('subject') as string;
+    const message = formData.get('message') as string;
+
+    const mailto = `mailto:group12llmsafetysim@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+    window.location.href = mailto;
+  }
+
   return (
     <Layout backButton={{ href: '/', label: 'Back to Home' }}>
       <div className="max-w-3xl mx-auto">
@@ -19,31 +32,29 @@ export default function ContactPage() {
               <CardDescription>We'll get back to you as soon as possible.</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4">
+              <Form className="space-y-4" action={handleSubmit}>
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" placeholder="Your name" />
+                  <Input name="name" placeholder="Your name" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="Your email address" />
+                  <Input name="email" type="email" placeholder="Your email address" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" placeholder="Message subject" />
+                  <Input name="subject" placeholder="Message subject" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" placeholder="Your message" rows={5} />
+                  <Textarea name="message" placeholder="Your message" rows={5} required />
                 </div>
-              </form>
+                <Button className="w-full" type="submit">
+                  <Send className="h-4 w-4 mr-2" />
+                  Send Message
+                </Button>
+              </Form>
             </CardContent>
-            <CardFooter>
-              <Button className="w-full">
-                <Send className="h-4 w-4 mr-2" />
-                Send Message
-              </Button>
-            </CardFooter>
           </Card>
 
           <div className="space-y-6">
