@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ThemeToggle from './ThemeToggle';
 
 interface HeaderProps {
   backButton: {
@@ -23,6 +24,7 @@ export function Header({ backButton }: HeaderProps) {
               <ArrowLeft className="h-4 w-4" /> {backButton.label}
             </Link>
           </Button>
+          <ThemeToggle />
         </div>
       </div>
     </header>

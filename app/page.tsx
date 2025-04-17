@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, BookOpen, Code, AlertTriangle, Lightbulb, ArrowRight } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   return (
@@ -34,6 +35,7 @@ export default function Home() {
             <Button variant="default" size="sm" asChild>
               <Link href="#simulator">Try Simulator</Link>
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </header>
