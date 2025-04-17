@@ -5,8 +5,8 @@ import type React from 'react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getSavedAttackSequences, deleteAttackSequence, type AttackSequence } from '@/lib/simulator-api';
-import { Play, Trash2, Download, Upload, Clock, CheckCircle, Search, AlertCircle } from 'lucide-react';
+import { getSavedAttackSequences, deleteAttackSequence, saveAttackSequence, type AttackSequence } from '@/lib/simulator-api';
+import { Trash2, Download, Upload, Clock, CheckCircle, Search, AlertCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -58,12 +58,6 @@ export function AttackSequenceManager() {
     }
   };
 
-  // Handle sequence replay
-  const handleReplaySequence = (sequence: AttackSequence) => {
-    console.log('Replaying sequence:', sequence);
-    // Implementation for replaying sequences would go here
-  };
-
   // Handle sequence export
   const handleExportSequence = (sequence: AttackSequence) => {
     const dataStr = JSON.stringify(sequence, null, 2);
@@ -94,7 +88,13 @@ export function AttackSequenceManager() {
           return;
         }
 
-        // Add to sequences
+        // Save to persistent storage
+        saveAttackSequence(importedSequence);
+
+        // Show a toast notification
+        toast.success('Sequence imported successfully!');
+
+        // Add visually until the next refresh
         setSequences([...sequences, importedSequence]);
 
         // Reset file input
@@ -116,7 +116,7 @@ export function AttackSequenceManager() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Saved Attack Sequences</CardTitle>
-        <CardDescription>Replay, export, or manage your saved attack sequences</CardDescription>
+        <CardDescription>View, export, or manage your saved attack sequences</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -164,9 +164,6 @@ export function AttackSequenceManager() {
                       <div className="flex items-center gap-1">
                         <Button variant="ghost" size="icon" onClick={() => handleViewDetails(sequence)}>
                           <Search className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleReplaySequence(sequence)}>
-                          <Play className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="icon" onClick={() => handleExportSequence(sequence)}>
                           <Download className="h-4 w-4" />
@@ -250,10 +247,6 @@ export function AttackSequenceManager() {
               </div>
 
               <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => handleReplaySequence(selectedSequence)}>
-                  <Play className="h-4 w-4 mr-2" />
-                  Replay Sequence
-                </Button>
                 <Button variant="outline" onClick={() => handleExportSequence(selectedSequence)}>
                   <Download className="h-4 w-4 mr-2" />
                   Export

@@ -189,7 +189,7 @@ export function SimulatorInterfaceInteractive({ scenario }: SimulatorInterfaceIn
     // Add confirmation message to the conversation
     const confirmationMessage: Message = {
       role: 'system',
-      content: `Attack sequence saved successfully with ID: ${id}. You can replay this sequence later or export it for sharing.`,
+      content: `Attack sequence saved successfully with ID: ${id}. You can view this sequence later or export it for sharing.`,
       timestamp: new Date(),
     };
 
