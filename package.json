@@ -2,6 +2,11 @@
   "name": "multi-turn-attack-simulator",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://kamisenheimer.github.io/LLMAttackSim/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KAMISENHEIMER/LLMAttackSim.git"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -40,6 +45,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
+    "gh-pages": "^6.3.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
