@@ -14,16 +14,16 @@ An app leveraging various LLMs to simulate different attacks for retrieving harm
    ```
 
 2. **Install dependencies:**  
-   You can use `npm`, `yarn`, `pnpm`, or `bun`. Example using `npm`:
+   You can use `npm`, `yarn`, `pnpm`, or `bun`. Example using `pnpm`:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Run the development server:**
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
    The app will be available at `http://localhost:3000` by default.
