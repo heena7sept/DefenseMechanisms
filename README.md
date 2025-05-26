@@ -9,8 +9,8 @@ An app leveraging various LLMs to simulate different attacks for retrieving harm
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/KAMISENHEIMER/LLMAttackSim.git
-   cd LLMAttackSim
+   git clone https://github.com/heena7sept/DefenseMechanisms.git
+   cd DefenseMechanisms
    ```
 
 2. **Install dependencies:**  
